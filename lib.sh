@@ -50,3 +50,27 @@ function swap_turn_on {
     echo "Turn on swap"
     swapon --all
 }
+
+# Wipe all data and partitions
+function disk_wipe {
+    local DISK=$1
+    echo "Wipe disk ${DISK}"
+    wipefs -q -a $DISK
+    sgdisk --zap-all $DISK
+}
+
+# Clone disk partitions from another disk
+function disk_clone {
+    local DISK_SRC=$1
+    local DISK_DST=$2
+
+    echo "Clone partitions to ${DISK_DST}"
+    sgdisk -R $DISK_DST $DISK_SRC
+
+    ensure "/dev/disk/by-id/* being populated" 5
+
+    echo "Reset disk GUID"
+    sgdisk -G $DISK_DST
+
+    ensure "/dev/disk/by-id/* being populated" 5
+}
