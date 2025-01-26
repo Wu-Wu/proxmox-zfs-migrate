@@ -325,3 +325,14 @@ function sync_filesystems {
     sync_boot_fs
     sync_root_fs
 }
+
+# Check is root fs on ZFS
+function is_zfs_on_root {
+    local ROOT_FS=$1
+
+    ROOT=$(findmnt -o SOURCE -f -M / | tail -1)
+    if [[ "${ROOT_FS}" != "${ROOT}" ]]; then
+        error_message "No ZFS on root! Got: ${ROOT}"
+        exit
+    fi
+}

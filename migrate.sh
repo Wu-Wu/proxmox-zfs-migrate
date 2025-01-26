@@ -49,6 +49,17 @@ function stage_base_prereqs {
     continue_stage
 }
 
+# Storage stage prerequisites
+function stage_storage_prereqs {
+    # ZFS pools exist
+    is_zfs_pool_exists $BPOOL
+    is_zfs_pool_exists $RPOOL
+    # check if root booted from ZFS
+    is_zfs_on_root $ROOT_FS
+
+    continue_stage
+}
+
 # Base stage actions
 function stage_base_actions {
     # using disks
@@ -113,6 +124,7 @@ MIGRATE_STAGE=${MIGRATE_STAGE:="base"}
 case $MIGRATE_STAGE in
     storage)
         echo "Continue migration @${MIGRATE_STAGE}"
+        stage_storage_prereqs
         ;;
     *)
         echo "Begin migration to ZFS"
