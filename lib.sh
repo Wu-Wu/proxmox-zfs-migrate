@@ -272,7 +272,7 @@ function zfs_set_mountpoints {
 # Set up pool boot fs
 function zfs_set_rootfs {
     local ROOT_POOL=$1
-    local ROOT_FS=$1
+    local ROOT_FS=$2
 
     echo "Set up pool boot fs"
 
