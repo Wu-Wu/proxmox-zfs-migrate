@@ -162,3 +162,17 @@ function zfs_create_swap {
 
     ensure "${NAME} being set up" 2
 }
+
+# Set root defaults for grub
+function tune_grub_defaults {
+    local ROOT_FS=$1
+
+    echo "Set up GRUB defaults"
+
+    local key="GRUB_CMDLINE_LINUX"
+    local val="root=ZFS=${ROOT_FS} boot=zfs"
+
+    sed -i.bak \
+        "/^$key\=/ { s/^#//; s%=.*%=\"$val\"%; }" \
+        /etc/default/grub
+}
