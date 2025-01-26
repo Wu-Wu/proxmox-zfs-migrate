@@ -22,8 +22,8 @@ function is_zfs_pool_exists {
     local POOL_NAME=$1
 
     found=`zpool list -H $POOL_NAME 2>/dev/null`
-    if [[ $? -eq 0 ]]; then
-        error_message "${POOL_NAME} found!"
+    if [[ $? -eq 1 ]]; then
+        error_message "${POOL_NAME} not found!"
         exit
     fi
 }
@@ -33,8 +33,8 @@ function is_zfs_pool_not_exists {
     local POOL_NAME=$1
 
     found=`zpool list -H $POOL_NAME 2>/dev/null`
-    if [[ $? -eq 1 ]]; then
-        error_message "${POOL_NAME} not found!"
+    if [[ $? -eq 0 ]]; then
+        error_message "${POOL_NAME} found!"
         exit
     fi
 }
