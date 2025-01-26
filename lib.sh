@@ -74,3 +74,51 @@ function disk_clone {
 
     ensure "/dev/disk/by-id/* being populated" 5
 }
+
+# Create ZFS boot pool
+function zfs_create_bpool {
+    local POOL_NAME=$1
+    local POOL_VDEV=$2
+
+    echo "Create ZFS pool: ${POOL_NAME}"
+
+    zpool create \
+        -o ashift=12 \
+        -o autotrim=on \
+        -o compatibility=grub2 \
+        -o cachefile=/etc/zfs/zpool.cache \
+        -O devices=off \
+        -O acltype=posixacl \
+        -O xattr=sa \
+        -O compression=lz4 \
+        -O relatime=on \
+        -O canmount=off \
+        -O mountpoint=/boot \
+        -R /mnt \
+        $POOL_NAME $POOL_VDEV
+
+    ensure "${POOL_NAME} being created" 2
+}
+
+# Create ZFS root pool
+function zfs_create_rpool {
+    local POOL_NAME=$1
+    local POOL_VDEV=$2
+
+    echo "Create ZFS pool: ${POOL_NAME}"
+    zpool create \
+        -o ashift=12 \
+        -o autotrim=on \
+        -o cachefile=/etc/zfs/zpool.cache \
+        -O acltype=posixacl \
+        -O xattr=sa \
+        -O dnodesize=auto \
+        -O compression=lz4 \
+        -O relatime=on \
+        -O canmount=off \
+        -O mountpoint=/ \
+        -R /mnt \
+        $POOL_NAME $POOL_VDEV
+
+    ensure "${POOL_NAME} being created" 2
+}
