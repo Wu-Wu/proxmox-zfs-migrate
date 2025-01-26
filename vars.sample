@@ -1,0 +1,27 @@
+# Existing disk (Proxmox installed)
+DISK_OLD=/dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_drive-scsi1
+
+# New disk
+DISK_NEW=/dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_drive-scsi0
+
+# swap file size
+SWAP_SIZE="1G"
+
+# BIOS boot size
+P_BIOS="+1M"
+
+# EFI boot size (/boot/efi)
+P_EFI="+512M"
+
+# Solaris boot size (/boot)
+P_BPOOL="+512M"
+
+# Solaris root size (/)
+P_RPOOL="-600M"
+
+# Instance dataset name
+INSTANCE="pve-1"
+
+# Current /etc/fstab entries for root and swap
+FSTAB_OLD_ROOT="/dev/pve/root"
+FSTAB_OLD_SWAP="/dev/pve/swap"
