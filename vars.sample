@@ -27,3 +27,18 @@ INSTANCE="pve-1"
 # Current /etc/fstab entries for root and swap
 FSTAB_OLD_ROOT="/dev/pve/root"
 FSTAB_OLD_SWAP="/dev/pve/swap"
+
+# ZFS pools names
+RPOOL="rpool"
+BPOOL="bpool"
+# Base datasets
+ROOT_DS="${RPOOL}/ROOT"
+BOOT_DS="${BPOOL}/BOOT"
+# Instance datasets
+ROOT_FS="${ROOT_DS}/${INSTANCE}"
+BOOT_FS="${BOOT_DS}/${INSTANCE}"
+# Other datasets
+TMP_FS="${RPOOL}/tmp"
+DATA_FS="${RPOOL}/data"
+# Swap volume
+SWAP_VOL="${RPOOL}/swap"
