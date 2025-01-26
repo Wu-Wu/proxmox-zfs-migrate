@@ -38,3 +38,15 @@ function is_zfs_pool_not_exists {
         exit
     fi
 }
+
+# Turn off swap
+function swap_turn_off {
+    echo "Turn off swap"
+    swapoff --all
+}
+
+# Turn on swap
+function swap_turn_on {
+    echo "Turn on swap"
+    swapon --all
+}
