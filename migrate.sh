@@ -118,16 +118,33 @@ function stage_base_actions {
     zfs_set_mountpoints MOUNTPOINTS
 }
 
+# Storage stage actions
+function stage_storage_actions {
+    tune_lvm_attrs
+    tune_proxmox_storage $DATA_FS
+
+    # old disk goes to mirror
+    bump_next_stage "mirror"
+}
+
 # current stage
 MIGRATE_STAGE=${MIGRATE_STAGE:="base"}
 
+if [[ "$MIGRATE_STAGE" != "base" ]]; then
+    echo "Continue migration @ stage ${MIGRATE_STAGE}"
+else
+    echo "Begin migration to ZFS"
+fi
+
 case $MIGRATE_STAGE in
+    mirror)
+        # TODO
+        ;;
     storage)
-        echo "Continue migration @${MIGRATE_STAGE}"
         stage_storage_prereqs
+        stage_storage_actions
         ;;
     *)
-        echo "Begin migration to ZFS"
         stage_base_prereqs
         stage_base_actions
         ;;
