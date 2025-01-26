@@ -49,8 +49,8 @@ function stage_base_prereqs {
     continue_stage
 }
 
-# Storage stage prerequisites
-function stage_storage_prereqs {
+# Almost any stage prerequisites
+function generic_stage_prereqs {
     # ZFS pools exist
     is_zfs_pool_exists $BPOOL
     is_zfs_pool_exists $RPOOL
@@ -123,6 +123,26 @@ function stage_storage_actions {
     tune_lvm_attrs
     tune_proxmox_storage $DATA_FS
 
+    # old disk goes to layout
+    bump_next_stage "layout-old"
+}
+
+# Layout old disk actions
+function stage_layout_old_actions {
+    # using disks
+    DISK1=${DISK_OLD}
+    DISK2=${DISK_NEW}
+
+    # clone partitions from new to old
+    disk_wipe $DISK1
+    disk_clone $DISK2 $DISK1
+
+    # bump EFI on new disk
+    tune_init_efi ${DISK2}-part2
+
+    # fix /etc/fstab mounts
+    tune_switch_efi
+
     # old disk goes to mirror
     bump_next_stage "mirror"
 }
@@ -138,10 +158,15 @@ fi
 
 case $MIGRATE_STAGE in
     mirror)
+        generic_stage_prereqs
         # TODO
         ;;
+    layout-old)
+        generic_stage_prereqs
+        stage_layout_old_actions
+        ;;
     storage)
-        stage_storage_prereqs
+        generic_stage_prereqs
         stage_storage_actions
         ;;
     *)

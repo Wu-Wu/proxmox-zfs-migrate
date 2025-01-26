@@ -215,6 +215,26 @@ function tune_grub_defaults {
         /etc/default/grub
 }
 
+# Format EFI partition
+function tune_format_efi {
+    local PART=$1
+
+    echo "Format EFI partition ${PART}"
+    proxmox-boot-tool format $PART --force
+
+    ensure "EFI partition being updated" 2
+}
+
+# Init EFI partition
+function tune_init_efi {
+    local PART=$1
+
+    echo "Init EFI partition ${PART}"
+    proxmox-boot-tool init $PART grub
+
+    ensure "EFI partition being updated" 2
+}
+
 # Install grub
 function tune_grub_install {
     local PART1=$1
@@ -222,13 +242,11 @@ function tune_grub_install {
 
     echo "Installing GRUB"
     umount /boot/efi
-    proxmox-boot-tool format $PART1 --force
-    ensure "EFI partition being updated" 2
-
+    tune_format_efi $PART1
     # new disk partition
-    proxmox-boot-tool init $PART1 grub
+    tune_init_efi $PART1
     # also old disk partition
-    proxmox-boot-tool init $PART2 grub
+    tune_init_efi $PART2
 }
 
 # Set up ZFS pool imports
@@ -256,6 +274,22 @@ function tune_fstab {
     sed -i.bak \
         "/^$root_key/d; /^$swap_key/c\\$swap_val" \
         /mnt/etc/fstab
+}
+
+# Switch to available EFI on new disk
+function tune_switch_efi {
+    local MOUNTPOINT="/boot/efi"
+
+    echo "Switch EFI mountpoint"
+    umount $MOUNTPOINT
+    # fix slashes
+    key=$(echo $MOUNTPOINT | sed 's/\//\\\//g')
+    uuid=$(proxmox-boot-tool status | fgrep 'is configured' | cut -d' ' -f1)
+    val="UUID=${uuid} ${MOUNTPOINT} vfat defaults 0 1"
+
+    sed -i.bak \
+        "/$key/c\\$val" \
+        /etc/fstab
 }
 
 # Change LVM attributes
