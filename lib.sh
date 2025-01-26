@@ -163,6 +163,44 @@ function zfs_create_swap {
     ensure "${NAME} being set up" 2
 }
 
+# Create ZFS datasets
+function zfs_create_datasets {
+    local ROOT_DS=$1
+    local BOOT_DS=$2
+    local ROOT_FS=$3
+    local BOOT_FS=$4
+    local TMP_FS=$5
+    local DATA_FS=$6
+
+    echo "Create ZFS datasets"
+
+    # some options
+    local NO_MOUNT="-o canmount=off -o mountpoint=none"
+    local NO_SNAPSHOT="-o com.sun:auto-snapshot=false"
+
+    zfs create $NO_MOUNT $ROOT_DS
+    zfs create $NO_MOUNT $BOOT_DS
+
+    # /
+    zfs create \
+        -o canmount=noauto \
+        -o mountpoint=/ \
+        $ROOT_FS
+    zfs mount $ROOT_FS
+
+    # /boot
+    zfs create \
+        -o mountpoint=/boot \
+        $BOOT_FS
+
+    # /tmp
+    zfs create $NO_SNAPSHOT $TMP_FS
+    chmod 1777 /mnt/tmp
+
+    # /data (for Proxmox storage)
+    zfs create $DATA_FS
+}
+
 # Set root defaults for grub
 function tune_grub_defaults {
     local ROOT_FS=$1
