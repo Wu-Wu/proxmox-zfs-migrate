@@ -163,6 +163,17 @@ function zfs_create_swap {
     ensure "${NAME} being set up" 2
 }
 
+# Attach vdev to ZFS pool
+function zfs_attach_vdev {
+    local POOL=$1
+    local VDEV_OLD=$2
+    local VDEV_NEW=$3
+
+    echo "Attach ${VDEV_NEW} to ${POOL}"
+    zpool attach -f \
+        $POOL ${VDEV_OLD} ${VDEV_NEW}
+}
+
 # Create ZFS datasets
 function zfs_create_datasets {
     local ROOT_DS=$1

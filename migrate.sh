@@ -40,6 +40,30 @@ function bump_next_stage {
     echo "Reboot system and re-run ${THIS_FILE} to continue migration."
 }
 
+# Mirgate finished
+function bump_finished {
+    # clean-up stage-file
+    rm -f $STAGE_FILE
+
+    echo ""
+    echo "***"
+    echo "*** MIGRATION FINISHED!"
+    echo "***"
+    echo "*** CAUTION! CAUTION! CAUTION! CAUTION!"
+    echo "***"
+    echo "*** YOU STRICTLY SHOULD WAIT TO COMPLETE"
+    echo "*** RESILVERING PROCESS ON ZFS POOLS!"
+    echo "*** Affected ZFS pools:"
+    echo "***    - ${BPOOL}"
+    echo "***    - ${RPOOL}"
+    echo "*** Feel free to use next command to check:"
+    echo "***    zpool status"
+    echo "***"
+    echo "*** Extra system reboot required in order"
+    echo "*** to use some features (e.g. swap, ...)"
+    echo "***"
+}
+
 # Base stage prerequisites
 function stage_base_prereqs {
     # ZFS pools does not exist
@@ -147,6 +171,29 @@ function stage_layout_old_actions {
     bump_next_stage "mirror"
 }
 
+# Mirror stage actions
+function stage_mirror_actions {
+    # using disks
+    DISK1=${DISK_OLD}
+    DISK2=${DISK_NEW}
+
+    # format EFI on old disk
+    tune_format_efi ${DISK1}-part2
+    # bump EFI on old disk
+    tune_init_efi ${DISK1}-part2
+
+    # attach old disk to boot pool
+    zfs_attach_vdev $BPOOL ${DISK2}-part3 ${DISK1}-part3
+
+    # attach old disk to root pool
+    zfs_attach_vdev $RPOOL ${DISK2}-part4 ${DISK1}-part4
+
+    # turn on swap
+    swap_turn_on
+
+    bump_finished
+}
+
 # current stage
 MIGRATE_STAGE=${MIGRATE_STAGE:="base"}
 
@@ -159,7 +206,7 @@ fi
 case $MIGRATE_STAGE in
     mirror)
         generic_stage_prereqs
-        # TODO
+        stage_mirror_actions
         ;;
     layout-old)
         generic_stage_prereqs
