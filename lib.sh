@@ -140,3 +140,25 @@ function zfs_create_rpool {
 
     ensure "${POOL_NAME} being created" 2
 }
+
+# Create ZFS volume for swap
+function zfs_create_swap {
+    local SIZE=$1
+    local NAME=$2
+
+    echo "Create swap volume"
+    zfs create -V $SIZE \
+        -o compression=zle \
+        -o logbias=throughput \
+        -o sync=always \
+        -o primarycache=metadata \
+        -o secondarycache=none \
+        -o com.sun:auto-snapshot=false \
+        $NAME
+
+    ensure "${NAME} being created" 2
+
+    mkswap -q -f /dev/zvol/${NAME}
+
+    ensure "${NAME} being set up" 2
+}
