@@ -258,6 +258,34 @@ function tune_fstab {
         /mnt/etc/fstab
 }
 
+# Change LVM attributes
+function tune_lvm_attrs {
+    echo "Change LVM attributes"
+    lvchange -an pve
+}
+
+# Set up Proxmox VE storage
+function tune_proxmox_storage {
+    local DATA_FS=$1
+
+    local storage_cfg_path="/etc/pve/storage.cfg"
+    local lvmthin_name="local-lvm"
+
+    echo "Set up Proxmox VE storage"
+    cat >>$storage_cfg_path <<EOF
+
+# Local ZFS
+zfspool: flash
+        pool ${DATA_FS}
+        sparse
+        content images,rootdir
+
+EOF
+    sed -i.bak \
+        "/$lvmthin_name/,+3 s/^/#/" \
+        $storage_cfg_path
+}
+
 # Set up mountpoints
 function zfs_set_mountpoints {
     local -n DATASETS=$1
