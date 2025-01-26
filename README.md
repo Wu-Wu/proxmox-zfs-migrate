@@ -74,15 +74,27 @@ Default value:
 Migrations script split disks into partitions. This
 parameter allows to tune partition sizes. Default values:
 
-    1M - BIOS boot partition
-    512M - EFI boot partition
-    512M - Solaris boot partition (/boot on Proxmox VE)
-    -600M - Solaris root partition (/ on Proxmox VE)
+    [bios]   +1M
+    [efi]  +512M
+    [boot] +512M
+    [root] -600M
+
+With this values disk will be slices as shown in table below.
+
+| Part. No | Size       | Key  | Description  | Proxmox VE mount |
+| -------- |----------- | ---- | ------------ | ---------------- |
+| -        |    7.0 KiB | -    | free space   | -                |
+| 1        | 1024.0 KiB | bios | BIOS boot    | -                |
+| 2        |  512.0 MiB | efi  | EFI boot     | `/boot/efi`      |
+| 3        |  512.0 MiB | boot | Solaris boot | `/boot`          |
+| 4        |  *         | root | Solaris root | `/`              |
+| -        |  600.0 MiB | -    | free space   | -                |
 
 In total 4 partitions will be created. Solaris root partition
-size will occupy all available disk space except the number
-written in this variable. As example on disk 10000M and
-default values for variable the root partition will occupy
+size will occupy all available disk space (marked by `*`) except
+the number written in this variable (unassigned). As example on
+disk 10000M and default values for variable the root partition
+will occupy
 
     10000M - 1025M - 600M = 8375M
 
