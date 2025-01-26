@@ -42,3 +42,12 @@ TMP_FS="${RPOOL}/tmp"
 DATA_FS="${RPOOL}/data"
 # Swap volume
 SWAP_VOL="${RPOOL}/swap"
+
+# Datasets' mountpoints
+declare -A MOUNTPOINTS=()
+MOUNTPOINTS[$RPOOL]="none"
+MOUNTPOINTS[$BPOOL]="none"
+MOUNTPOINTS[$BOOT_FS]="/boot"
+MOUNTPOINTS[$DATA_FS]="/data"
+MOUNTPOINTS[$TMP_FS]="/tmp"
+MOUNTPOINTS[$ROOT_FS]="/"

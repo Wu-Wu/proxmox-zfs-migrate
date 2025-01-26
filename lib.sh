@@ -220,6 +220,27 @@ function tune_fstab {
         /mnt/etc/fstab
 }
 
+# Set up mountpoints
+function zfs_set_mountpoints {
+    local -n DATASETS=$1
+
+    echo "Set up mountpoints"
+
+    for ds in "${!DATASETS[@]}"; do
+        zfs set mountpoint=${DATASETS[$ds]} $ds
+    done
+}
+
+# Set up pool boot fs
+function zfs_set_rootfs {
+    local ROOT_POOL=$1
+    local ROOT_FS=$1
+
+    echo "Set up pool boot fs"
+
+    zpool set bootfs=$ROOT_FS $ROOT_POOL
+}
+
 # Sync root filesystem
 function sync_root_fs {
     cd /mnt
