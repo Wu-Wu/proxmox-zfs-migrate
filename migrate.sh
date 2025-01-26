@@ -1,5 +1,14 @@
 #!/bin/bash
 
+#
+# migrate.sh - Proxmox ZFS migrate: main script
+# Copyright (C) 2025 Anton Gerasimov
+# https://github.com/Wu-Wu/proxmox-zfs-migrate
+# License: MIT
+#
+
+VERSION="0.1.1"
+
 PWD=`pwd`
 LIB_FILE="${PWD}/lib.sh"
 VARS_FILE="${PWD}/vars"
@@ -196,6 +205,8 @@ function stage_mirror_actions {
 
 # current stage
 MIGRATE_STAGE=${MIGRATE_STAGE:="base"}
+
+echo "Proxmox-ZFS-Migrate v${VERSION}"
 
 if [[ "$MIGRATE_STAGE" != "base" ]]; then
     echo "Continue migration @ stage ${MIGRATE_STAGE}"

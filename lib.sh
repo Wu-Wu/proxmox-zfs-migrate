@@ -1,5 +1,10 @@
+#!/bin/bash
+
 #
-# Proxmox-ZFS-Migrate library functions
+# lib.sh - Proxmox ZFS migrate: library functions
+# Copyright (C) 2025 Anton Gerasimov
+# https://github.com/Wu-Wu/proxmox-zfs-migrate
+# License: MIT
 #
 
 # Print error message

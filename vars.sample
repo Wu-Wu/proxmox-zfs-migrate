@@ -1,5 +1,12 @@
 #!/bin/bash
 
+#
+# vars.sample - Proxmox ZFS migrate: config sample
+# Copyright (C) 2025 Anton Gerasimov
+# https://github.com/Wu-Wu/proxmox-zfs-migrate
+# License: MIT
+#
+
 # Existing disk (Proxmox installed)
 DISK_OLD=/dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_drive-scsi1
 
