@@ -177,6 +177,49 @@ function tune_grub_defaults {
         /etc/default/grub
 }
 
+# Install grub
+function tune_grub_install {
+    local PART1=$1
+    local PART2=$2
+
+    echo "Installing GRUB"
+    umount /boot/efi
+    proxmox-boot-tool format $PART1 --force
+    ensure "EFI partition being updated" 2
+
+    # new disk partition
+    proxmox-boot-tool init $PART1 grub
+    # also old disk partition
+    proxmox-boot-tool init $PART2 grub
+}
+
+# Set up ZFS pool imports
+function tune_pools_imports {
+    local POOL_NAME=$1
+
+    echo "Ensure import ZFS pools"
+    cp /etc/zfs/zpool.cache /mnt/etc/zfs/
+    cd /mnt/etc/systemd/system/zfs-import.target.wants
+    ln -s /lib/systemd/system/zfs-import@.service zfs-import@${POOL_NAME}.service
+}
+
+# Set up /etc/fstab
+function tune_fstab {
+    local ROOT_OLD=$1
+    local SWAP_OLD=$2
+    local SWAP_NEW=$3
+
+    echo "Set up FS table"
+    # fix slashes
+    root_key=$(echo $ROOT_OLD | sed 's/\//\\\//g')
+    swap_key=$(echo $SWAP_OLD | sed 's/\//\\\//g')
+    swap_val="/dev/zvol/${SWAP_NEW} none swap discard 0 0"
+
+    sed -i.bak \
+        "/^$root_key/d; /^$swap_key/c\\$swap_val" \
+        /mnt/etc/fstab
+}
+
 # Sync root filesystem
 function sync_root_fs {
     cd /mnt
