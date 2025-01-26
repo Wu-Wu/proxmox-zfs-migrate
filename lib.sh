@@ -176,3 +176,22 @@ function tune_grub_defaults {
         "/^$key\=/ { s/^#//; s%=.*%=\"$val\"%; }" \
         /etc/default/grub
 }
+
+# Sync root filesystem
+function sync_root_fs {
+    cd /mnt
+    rsync -ax --include '/*' --exclude 'boot/*' / ./
+}
+
+# Sync boot filesystem
+function sync_boot_fs {
+    cd /mnt/boot
+    rsync -ax --include '/*' --exclude 'efi/*' /boot/ ./
+}
+
+# Syncs boot and root filesystems
+function sync_filesystems {
+    echo "Syncing boot and root filesystems"
+    sync_boot_fs
+    sync_root_fs
+}
