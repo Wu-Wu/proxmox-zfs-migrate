@@ -106,4 +106,8 @@ Current value of swap filesystem in `/etc/fstab`. Default value:
     /dev/pve/swap
 
 
-...
+# Links
+
+[Proxmox: ZFS on Linux](https://pve.proxmox.com/wiki/ZFS_on_Linux)
+
+[OpenZFS: Debian Bookworm Root on ZFS](https://openzfs.github.io/openzfs-docs/Getting%20Started/Debian/Debian%20Bookworm%20Root%20on%20ZFS.html)
