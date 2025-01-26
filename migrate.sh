@@ -1,6 +1,7 @@
 #!/bin/bash
 
 PWD=`pwd`
+LIB_FILE="${PWD}/lib.sh"
 VARS_FILE="${PWD}/vars"
 STAGE_FILE="${PWD}/.migrate-stage"
 THIS_FILE="${PWD}/$(basename $0)"
@@ -13,22 +14,31 @@ fi
 
 source $VARS_FILE
 
+if [[ ! -f $LIB_FILE ]]; then
+    echo ""
+    echo "ERROR: ${LIB_FILE} not found!"
+    exit
+fi
+
+source $LIB_FILE
+
 if [[ -f $STAGE_FILE ]]; then
     source $STAGE_FILE
 fi
 
-# current stage
-MIGRATE_STAGE=${MIGRATE_STAGE:="base"}
+# Stage OK message
+function continue_stage {
+    echo "Look good! Continue.."
+}
 
-case $MIGRATE_STAGE in
-    storage)
-        echo "Continue migration @${MIGRATE_STAGE}"
-        ;;
-    *)
-        echo "Begin migration to ZFS"
-        stage_base_prereqs
-        ;;
-esac
+# Set up next stage
+function bump_next_stage {
+    local NEXT_STAGE=$1
+
+    echo "MIGRATE_STAGE=${NEXT_STAGE}" > $STAGE_FILE
+
+    echo "Reboot system and re-run ${THIS_FILE} to continue migration."
+}
 
 # Base stage prerequisites
 function stage_base_prereqs {
@@ -93,20 +103,20 @@ function stage_base_actions {
     umount /mnt
 
     # set up mountpoints
-    zfs_set_rootfs $ROOT_FS $RPOOL
+    zfs_set_rootfs $RPOOL $ROOT_FS
     zfs_set_mountpoints MOUNTPOINTS
 }
 
-# Set up next stage
-function bump_next_stage {
-    local NEXT_STAGE=$1
+# current stage
+MIGRATE_STAGE=${MIGRATE_STAGE:="base"}
 
-    echo "MIGRATE_STAGE=${NEXT_STAGE}" > $STAGE_FILE
-
-    echo "Reboot system and re-run ${THIS_FILE} to continue migration."
-}
-
-# Stage OK message
-function continue_stage {
-    echo "Look good! Continue.."
-}
+case $MIGRATE_STAGE in
+    storage)
+        echo "Continue migration @${MIGRATE_STAGE}"
+        ;;
+    *)
+        echo "Begin migration to ZFS"
+        stage_base_prereqs
+        stage_base_actions
+        ;;
+esac
