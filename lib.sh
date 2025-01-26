@@ -75,6 +75,24 @@ function disk_clone {
     ensure "/dev/disk/by-id/* being populated" 5
 }
 
+# Create required partitions on disk
+function disk_create_partitions {
+    local DISK=$1
+    local -n TABLE=$2
+    echo "Create partitions on ${DISK}"
+    # sgdisk -L
+    # BIOS boot: EF02
+    # EFI System: EF00
+    # Solaris boot: BE00
+    # Solaris root: BF00
+    sgdisk -a1 -n1:24K:${TABLE[bios]} -t1:EF02 $DISK
+    sgdisk     -n2:0:${TABLE[efi]}    -t2:EF00 $DISK
+    sgdisk     -n3:0:${TABLE[boot]}   -t3:BE00 $DISK
+    sgdisk     -n4:0:${TABLE[root]}   -t4:BF00 $DISK
+
+    ensure "/dev/disk/by-id/* being populated" 5
+}
+
 # Create ZFS boot pool
 function zfs_create_bpool {
     local POOL_NAME=$1
