@@ -138,6 +138,80 @@ Test set up contains preconfigured ZFS pool `vault`:
 
 ![vault details](docs/04-vault.png "vault details")
 
+## First run
+
+First run creates many things:
+
+* Partitionins new disk;
+
+* Adds ZFS boot and root pools;
+
+* Adds ZFS datasets (`/tmp`, `/data`, `swap`)
+
+* Fixes fs table, set mountpoints, boot fs;
+
+* Updates EFI boot partitions;
+
+Stage output available in file [migrate-stage-base.log](docs/migrate-stage-base.log).
+
+In order to continue migration reboot required. After that need to re-run script and follow next stage.
+
+## Second run
+
+Second run does a few things:
+
+* Changes LVM attributes;
+
+* Adds newly created dataset (`rpool/data`) as Proxmox VE storage (`flash`);
+
+Stage output available in file [migrate-stage-storage.log](docs/migrate-stage-storage.log).
+
+In order to continue migration reboot required. After that need to re-run script and follow next stage.
+
+## Third run
+
+Third run does a few things:
+
+* Replicates structure an old disk to new disk;
+
+* Refresh and switch EFI boot to new disk;
+
+Stage output available in file [migrate-stage-layout-old.log](docs/migrate-stage-layout-old.log).
+
+In order to continue migration reboot required. After that need to re-run script and follow next stage.
+
+## Fourth run
+
+Fourth run does a few things:
+
+* Refresh EFI boot on both disks;
+
+* Adds partitions of old disk to the corresponding ZFS pool;
+
+This stage required to wait the resilvering process and then reboot.
+
+After that the Proxmox VE is fully migrated.
+
+Summary page (Datacenter - pve-dev - Summary):
+
+![Summary Page](docs/05-summary.png "Summary Page")
+
+Disks page (Datacenter - pve-dev - Disks):
+
+![Disks Page](docs/06-disks.png "Disks Page")
+
+ZFS page (Datacenter - pve-dev - Disks - ZFS):
+
+![ZFS Page](docs/07-zfs.png "ZFS Page")
+
+ZFS pool `rpool`:
+
+![rpool details](docs/08-rpool.png "rpool details")
+
+ZFS pool `bpool`:
+
+![bpool details](docs/09-bpool.png "bpool details")
+
 
 # Links
 

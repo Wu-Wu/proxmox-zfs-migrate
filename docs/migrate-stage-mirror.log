@@ -1,0 +1,67 @@
+root@pve-dev:~# ./migrate.sh
+Proxmox-ZFS-Migrate v0.1.1
+Continue migration @ stage mirror
+Look good! Continue..
+Format EFI partition /dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_drive-scsi1-part2
+UUID="" SIZE="536870912" FSTYPE="" PARTTYPE="c12a7328-f81f-11d2-ba4b-00a0c93ec93b" PKNAME="sdb" MOUNTPOINT=""
+Formatting '/dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_drive-scsi1-part2' as vfat..
+mkfs.fat 4.2 (2021-01-31)
+Done.
+Wait EFI partition being updated ...
+Init EFI partition /dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_drive-scsi1-part2
+Re-executing '/usr/sbin/proxmox-boot-tool' in new private mount namespace..
+UUID="E8A8-A6EC" SIZE="536870912" FSTYPE="vfat" PARTTYPE="c12a7328-f81f-11d2-ba4b-00a0c93ec93b" PKNAME="sdb" MOUNTPOINT=""
+Mounting '/dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_drive-scsi1-part2' on '/var/tmp/espmounts/E8A8-A6EC'.
+Installing grub x86_64 target..
+Installing for x86_64-efi platform.
+Installation finished. No error reported.
+Installing grub x86_64 target (removable)..
+Installing for x86_64-efi platform.
+Installation finished. No error reported.
+Unmounting '/dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_drive-scsi1-part2'.
+Adding '/dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_drive-scsi1-part2' to list of synced ESPs..
+Refreshing kernels and initrds..
+Running hook script 'proxmox-auto-removal'..
+Running hook script 'zz-proxmox-boot'..
+No /etc/kernel/cmdline found - falling back to /proc/cmdline
+Copying and configuring kernels on /dev/disk/by-uuid/DE1A-69EB
+    Copying kernel 6.8.12-4-pve
+    Copying kernel 6.8.12-6-pve
+Generating grub configuration file ...
+Found linux image: /boot/vmlinuz-6.8.12-6-pve
+Found initrd image: /boot/initrd.img-6.8.12-6-pve
+Found linux image: /boot/vmlinuz-6.8.12-4-pve
+Found initrd image: /boot/initrd.img-6.8.12-4-pve
+Adding boot menu entry for UEFI Firmware Settings ...
+done
+Copying and configuring kernels on /dev/disk/by-uuid/E8A8-A6EC
+    Copying kernel 6.8.12-4-pve
+    Copying kernel 6.8.12-6-pve
+Generating grub configuration file ...
+Found linux image: /boot/vmlinuz-6.8.12-6-pve
+Found initrd image: /boot/initrd.img-6.8.12-6-pve
+Found linux image: /boot/vmlinuz-6.8.12-4-pve
+Found initrd image: /boot/initrd.img-6.8.12-4-pve
+Adding boot menu entry for UEFI Firmware Settings ...
+done
+Wait EFI partition being updated ...
+Attach /dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_drive-scsi1-part3 to bpool
+Attach /dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_drive-scsi1-part4 to rpool
+Turn on swap
+
+***
+*** MIGRATION FINISHED!
+***
+*** CAUTION! CAUTION! CAUTION! CAUTION!
+***
+*** YOU STRICTLY SHOULD WAIT TO COMPLETE
+*** RESILVERING PROCESS ON ZFS POOLS!
+*** Affected ZFS pools:
+***    - bpool
+***    - rpool
+*** Feel free to use next command to check:
+***    zpool status
+***
+*** Extra system reboot required in order
+*** to use some features (e.g. swap, ...)
+***

@@ -1,0 +1,7 @@
+root@pve-dev:~# ./migrate.sh
+Proxmox-ZFS-Migrate v0.1.1
+Continue migration @ stage storage
+Look good! Continue..
+Change LVM attributes
+Set up Proxmox VE storage
+Reboot system and re-run /root/migrate.sh to continue migration.

@@ -1,0 +1,105 @@
+root@pve-dev:~# ./migrate.sh
+Proxmox-ZFS-Migrate v0.1.1
+Begin migration to ZFS
+Look good! Continue..
+Turn off swap
+Wipe disk /dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_drive-scsi0
+Creating new GPT entries in memory.
+GPT data structures destroyed! You may now partition the disk using fdisk or
+other utilities.
+Create partitions on /dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_drive-scsi0
+Creating new GPT entries in memory.
+The operation has completed successfully.
+The operation has completed successfully.
+The operation has completed successfully.
+The operation has completed successfully.
+Wait /dev/disk/by-id/* being populated ...
+Create ZFS pool: bpool
+Wait bpool being created ...
+Create ZFS pool: rpool
+Wait rpool being created ...
+Create ZFS datasets
+Create swap volume
+Wait rpool/swap being created ...
+Wait rpool/swap being set up ...
+Set up GRUB defaults
+Reboot system and re-run /root/migrate.sh to continue migration.
+Syncing boot and root filesystems
+Installing GRUB
+Format EFI partition /dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_drive-scsi0-part2
+UUID="" SIZE="536870912" FSTYPE="" PARTTYPE="c12a7328-f81f-11d2-ba4b-00a0c93ec93b" PKNAME="sda" MOUNTPOINT=""
+Formatting '/dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_drive-scsi0-part2' as vfat..
+mkfs.fat 4.2 (2021-01-31)
+Done.
+Wait EFI partition being updated ...
+Init EFI partition /dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_drive-scsi0-part2
+Re-executing '/usr/sbin/proxmox-boot-tool' in new private mount namespace..
+UUID="DE1A-69EB" SIZE="536870912" FSTYPE="vfat" PARTTYPE="c12a7328-f81f-11d2-ba4b-00a0c93ec93b" PKNAME="sda" MOUNTPOINT=""
+Mounting '/dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_drive-scsi0-part2' on '/var/tmp/espmounts/DE1A-69EB'.
+Installing grub x86_64 target..
+Installing for x86_64-efi platform.
+Installation finished. No error reported.
+Installing grub x86_64 target (removable)..
+Installing for x86_64-efi platform.
+Installation finished. No error reported.
+Unmounting '/dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_drive-scsi0-part2'.
+Adding '/dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_drive-scsi0-part2' to list of synced ESPs..
+Refreshing kernels and initrds..
+Running hook script 'proxmox-auto-removal'..
+Running hook script 'zz-proxmox-boot'..
+No /etc/kernel/cmdline found - falling back to /proc/cmdline
+Copying and configuring kernels on /dev/disk/by-uuid/DE1A-69EB
+    Copying kernel 6.8.12-4-pve
+    Copying kernel 6.8.12-6-pve
+Generating grub configuration file ...
+Found linux image: /boot/vmlinuz-6.8.12-6-pve
+Found initrd image: /boot/initrd.img-6.8.12-6-pve
+Found linux image: /boot/vmlinuz-6.8.12-4-pve
+Found initrd image: /boot/initrd.img-6.8.12-4-pve
+Adding boot menu entry for UEFI Firmware Settings ...
+done
+    Disabling upstream hook /etc/initramfs/post-update.d/systemd-boot
+    Disabling upstream hook /etc/kernel/postinst.d/zz-systemd-boot
+    Disabling upstream hook /etc/kernel/postrm.d/zz-systemd-boot
+Wait EFI partition being updated ...
+Init EFI partition /dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_drive-scsi1-part2
+Re-executing '/usr/sbin/proxmox-boot-tool' in new private mount namespace..
+UUID="FC13-C4C7" SIZE="536870912" FSTYPE="vfat" PARTTYPE="c12a7328-f81f-11d2-ba4b-00a0c93ec93b" PKNAME="sdb" MOUNTPOINT=""
+Mounting '/dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_drive-scsi1-part2' on '/var/tmp/espmounts/FC13-C4C7'.
+Installing grub x86_64 target..
+Installing for x86_64-efi platform.
+Installation finished. No error reported.
+Installing grub x86_64 target (removable)..
+Installing for x86_64-efi platform.
+Installation finished. No error reported.
+Unmounting '/dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_drive-scsi1-part2'.
+Adding '/dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_drive-scsi1-part2' to list of synced ESPs..
+Refreshing kernels and initrds..
+Running hook script 'proxmox-auto-removal'..
+Running hook script 'zz-proxmox-boot'..
+No /etc/kernel/cmdline found - falling back to /proc/cmdline
+Copying and configuring kernels on /dev/disk/by-uuid/DE1A-69EB
+    Copying kernel 6.8.12-4-pve
+    Copying kernel 6.8.12-6-pve
+Generating grub configuration file ...
+Found linux image: /boot/vmlinuz-6.8.12-6-pve
+Found initrd image: /boot/initrd.img-6.8.12-6-pve
+Found linux image: /boot/vmlinuz-6.8.12-4-pve
+Found initrd image: /boot/initrd.img-6.8.12-4-pve
+Adding boot menu entry for UEFI Firmware Settings ...
+done
+Copying and configuring kernels on /dev/disk/by-uuid/FC13-C4C7
+    Copying kernel 6.8.12-4-pve
+    Copying kernel 6.8.12-6-pve
+Generating grub configuration file ...
+Found linux image: /boot/vmlinuz-6.8.12-6-pve
+Found initrd image: /boot/initrd.img-6.8.12-6-pve
+Found linux image: /boot/vmlinuz-6.8.12-4-pve
+Found initrd image: /boot/initrd.img-6.8.12-4-pve
+Adding boot menu entry for UEFI Firmware Settings ...
+done
+Wait EFI partition being updated ...
+Ensure import ZFS pools
+Set up FS table
+Set up pool boot fs
+Set up mountpoints
