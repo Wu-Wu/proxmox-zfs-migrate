@@ -190,7 +190,7 @@ Fourth run does a few things:
 
 This stage required to wait the resilvering process and then reboot.
 
-After that the Proxmox VE is fully migrated.
+## Proxmox VE is fully migrated
 
 Summary page (Datacenter - pve-dev - Summary):
 
