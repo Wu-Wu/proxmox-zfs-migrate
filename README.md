@@ -124,19 +124,19 @@ The Proxmox VE testing VM uses configuration [pve-dev.conf](docs/pve-dev.conf).
 
 Summary page (Datacenter - pve-dev - Summary):
 
-[Summary Page](docs/01-summary.png)
+![Summary Page](docs/01-summary.png "Summary Page")
 
 Disks page (Datacenter - pve-dev - Disks):
 
-[Disks Page](docs/02-disks.png)
+![Disks Page](docs/02-disks.png "Disks Page")
 
 ZFS page (Datacenter - pve-dev - Disks - ZFS):
 
-[ZFS Page](docs/03-zfs.png)
+![ZFS Page](docs/03-zfs.png "ZFS Page")
 
 Test set up contains preconfigured ZFS pool `vault`:
 
-[vault details](docs/04-vault.png)
+![vault details](docs/04-vault.png "vault details")
 
 
 # Links
