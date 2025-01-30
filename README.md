@@ -212,6 +212,31 @@ ZFS pool `bpool`:
 
 ![bpool details](docs/09-bpool.png "bpool details")
 
+## Proxmox VE upgrade
+
+There is no difficulties to upgrade Proxmox VE in this (new) disk configuration.
+
+Just check updates
+
+    apt update
+
+Sample output in [apt-update.log](docs/apt-update.log).
+
+And the do upgrade
+
+    apt dist-upgrade
+
+Sample output in [apt-dist-upgrade.log](docs/apt-dist-upgrade.log).
+
+After reboot the newly added kernel will be loaded.
+
+## Proxmox VE upgraded (new kernel)
+
+Summary page (Datacenter - pve-dev - Summary):
+
+![Summary Page](docs/10-summary.png "Summary Page")
+
+
 
 # Links
 
