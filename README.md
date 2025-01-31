@@ -146,7 +146,7 @@ First run creates many things:
 
 * Adds ZFS boot and root pools;
 
-* Adds ZFS datasets (`/tmp`, `/data`, `swap`)
+* Adds ZFS datasets (`rpool/tmp`, `rpool/data`, `rpool/swap`)
 
 * Fixes fs table, set mountpoints, boot fs;
 
