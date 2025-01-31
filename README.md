@@ -236,6 +236,32 @@ Summary page (Datacenter - pve-dev - Summary):
 
 ![Summary Page](docs/10-summary.png "Summary Page")
 
+# Migrate on production Proxmox VE
+
+I've been migrated my Proxmox VE installation using this script.
+
+Here is disk specs:
+
+* ADATA XPG GAMMIX S11 Pro M.2 NVME 1 Tb (2x);
+* WD Red Pro WD6003FFBX-68MU3N0 SATA 6 Tb (2x);
+
+Proxmox VE was installed on first NVME.
+
+![Summary Page](docs/p01-summary.png "Summary Page")
+
+![Disks Page](docs/p02-disks.png "Disks Page")
+
+After script done:
+
+![Summary Page](docs/p03-summary.png "Summary Page")
+
+![Disks Page](docs/p04-disks.png "Disks Page")
+
+![ZFS Page](docs/p05-zfs.png "ZFS Page")
+
+And the Proxmox VE dist-upgrage brings new kernel. So the kernel upgraded from `6.8.12-5-pve` to `6.8.12-8-pve`.
+
+![Summary Page](docs/p06-summary-upgrade.png "Summary Page")
 
 
 # Links
