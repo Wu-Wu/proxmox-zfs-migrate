@@ -9,8 +9,28 @@ The software provided on this site is distributed "as is" and without
 warranties of any kind, either express or implied. Use of the software
 is at your own risk.
 
+## Table of Contents
+
+- [Usage](#usage)
+   * [Assumptions](#assumptions)
+   * [Description](#description)
+   * [Configuration](#configuration)
+   * [Variables overview](#variables-overview)
+- [Testing migration using VM inside Proxmox VE](#testing-migration-using-vm-inside-proxmox-ve)
+   * [First run](#first-run)
+   * [Second run](#second-run)
+   * [Third run](#third-run)
+   * [Fourth run](#fourth-run)
+   * [Proxmox VE is fully migrated](#proxmox-ve-is-fully-migrated)
+   * [Proxmox VE upgrade](#proxmox-ve-upgrade)
+   * [Proxmox VE upgraded (new kernel)](#proxmox-ve-upgraded-new-kernel)
+- [Migrate on production Proxmox VE](#migrate-on-production-proxmox-ve)
+- [Links](#links)
+
+<a name="usage"></a>
 ## Usage
 
+<a name="assumptions"></a>
 ### Assumptions
 
 Script will work under assumptions below:
@@ -25,6 +45,7 @@ Script will work under assumptions below:
 
 5. On Proxmox node might be configured other ZFS pools.
 
+<a name="description"></a>
 ### Description
 
 Migration using this script take approximately 10 to 15 minutes.
@@ -32,6 +53,7 @@ Exact time depends on many factors, primarly of hardware and
 the amount of data on existing installation to be
 transferred and mirrored.
 
+<a name="configuration"></a>
 ### Configuration
 
 Script using configuration variables which allows to set
@@ -46,6 +68,7 @@ can be copyed and edited to settle the needs.
     $ cp vars.sample vars
     $ nano vars
 
+<a name="variables-overview"></a>
 ### Variables overview
 
 #### DISK_OLD
@@ -118,7 +141,8 @@ Current value of swap filesystem in `/etc/fstab`. Default value:
     /dev/pve/swap
 
 
-# Testing migration using VM inside Proxmox VE
+<a name="testing-migration-using-vm-inside-proxmox-ve"></a>
+## Testing migration using VM inside Proxmox VE
 
 The Proxmox VE testing VM uses configuration [pve-dev.conf](docs/pve-dev.conf).
 
@@ -138,7 +162,8 @@ Test set up contains preconfigured ZFS pool `vault`:
 
 ![vault details](docs/04-vault.png "vault details")
 
-## First run
+<a name="first-run"></a>
+### First run
 
 First run creates many things:
 
@@ -156,7 +181,8 @@ Stage output available in file [migrate-stage-base.log](docs/migrate-stage-base.
 
 In order to continue migration reboot required. After that need to re-run script and follow next stage.
 
-## Second run
+<a name="second-run"></a>
+### Second run
 
 Second run does a few things:
 
@@ -168,7 +194,8 @@ Stage output available in file [migrate-stage-storage.log](docs/migrate-stage-st
 
 In order to continue migration reboot required. After that need to re-run script and follow next stage.
 
-## Third run
+<a name="third-run"></a>
+### Third run
 
 Third run does a few things:
 
@@ -180,7 +207,8 @@ Stage output available in file [migrate-stage-layout-old.log](docs/migrate-stage
 
 In order to continue migration reboot required. After that need to re-run script and follow next stage.
 
-## Fourth run
+<a name="fourth-run"></a>
+### Fourth run
 
 Fourth run does a few things:
 
@@ -190,7 +218,8 @@ Fourth run does a few things:
 
 This stage required to wait the resilvering process and then reboot.
 
-## Proxmox VE is fully migrated
+<a name="proxmox-ve-is-fully-migrated"></a>
+### Proxmox VE is fully migrated
 
 Summary page (Datacenter - pve-dev - Summary):
 
@@ -212,7 +241,8 @@ ZFS pool `bpool`:
 
 ![bpool details](docs/09-bpool.png "bpool details")
 
-## Proxmox VE upgrade
+<a name="proxmox-ve-upgrade"></a>
+### Proxmox VE upgrade
 
 There is no difficulties to upgrade Proxmox VE in this (new) disk configuration.
 
@@ -230,13 +260,15 @@ Sample output in [apt-dist-upgrade.log](docs/apt-dist-upgrade.log).
 
 After reboot the newly added kernel will be loaded.
 
-## Proxmox VE upgraded (new kernel)
+<a name="proxmox-ve-upgraded-new-kernel"></a>
+### Proxmox VE upgraded (new kernel)
 
 Summary page (Datacenter - pve-dev - Summary):
 
 ![Summary Page](docs/10-summary.png "Summary Page")
 
-# Migrate on production Proxmox VE
+<a name="migrate-on-production-proxmox-ve"></a>
+## Migrate on production Proxmox VE
 
 I've been migrated my Proxmox VE installation using this script.
 
@@ -263,8 +295,8 @@ And the Proxmox VE dist-upgrage brings new kernel. So the kernel upgraded from `
 
 ![Summary Page](docs/p06-summary-upgrade.png "Summary Page")
 
-
-# Links
+<a name="links"></a>
+## Links
 
 [Proxmox: ZFS on Linux](https://pve.proxmox.com/wiki/ZFS_on_Linux)
 
