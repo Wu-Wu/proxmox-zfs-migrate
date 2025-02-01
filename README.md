@@ -22,8 +22,7 @@ is at your own risk.
    * [Third run](#third-run)
    * [Fourth run](#fourth-run)
    * [Proxmox VE is fully migrated](#proxmox-ve-is-fully-migrated)
-   * [Proxmox VE upgrade](#proxmox-ve-upgrade)
-   * [Proxmox VE upgraded (new kernel)](#proxmox-ve-upgraded-new-kernel)
+   * [Upgrade Proxmox VE](#proxmox-ve-upgrade)
 - [Migrate on production Proxmox VE](#migrate-on-production-proxmox-ve)
 - [Links](#links)
 
@@ -242,7 +241,7 @@ ZFS pool `bpool`:
 ![bpool details](docs/09-bpool.png "bpool details")
 
 <a name="proxmox-ve-upgrade"></a>
-### Proxmox VE upgrade
+### Upgrade Proxmox VE
 
 There is no difficulties to upgrade Proxmox VE in this (new) disk configuration.
 
@@ -258,10 +257,7 @@ And the do upgrade
 
 Sample output in [apt-dist-upgrade.log](docs/apt-dist-upgrade.log).
 
-After reboot the newly added kernel will be loaded.
-
-<a name="proxmox-ve-upgraded-new-kernel"></a>
-### Proxmox VE upgraded (new kernel)
+After reboot the newly added kernel will be loaded. Upgraded Proxmox VE shown below.
 
 Summary page (Datacenter - pve-dev - Summary):
 
